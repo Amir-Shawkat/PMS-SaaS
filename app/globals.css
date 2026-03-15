@@ -145,9 +145,19 @@
 }
 .PhoneInputInput {
   outline: none;
+  margin-left: 4px;
   background: #1a1d21;
-  color: white;
+  font-size: 14px;
+  font-weight: 500;
 }
+
+.PhoneInputInput::placeholder {
+  color: #1a1d21;
+}
+
+.input-phone {
+    @apply mt-2 h-11 rounded-md px-3 text-sm border bg-dark-400 placeholder:text-dark-600 border-dark-500 !important;
+  }
 
 :root {
   --card: oklch(1 0 0);

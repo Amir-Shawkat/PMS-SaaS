@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Geist } from "next/font/google";
+import { Plus_Jakarta_Sans as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const fontSans = FontSans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sans",
+});
 
 
 
@@ -19,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className="dark" style={{colorScheme: 'dark'}}>
       <body
-        className={cn('min-h-screen bg-dark-300 font-sans antialiased', geist.variable)}
+        className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}
       >
         <ThemeProvider
             attribute="class"
