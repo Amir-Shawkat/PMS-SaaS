@@ -13,6 +13,7 @@ import { UserFormValidation } from "@/lib/validation";
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
+import { createUser } from "@/lib/actions/patient.actions";
 
 export const PatientForm = () => {
   const router = useRouter();
@@ -42,6 +43,11 @@ export const PatientForm = () => {
       if (newUser) {
         router.push(`/patients/${newUser.$id}/register`);
       }
+
+      // const userData = {name, email, phone};
+      // const user = await createUser(userData);
+      // if (user) router.push(`/patients/${user.$id}/register`);
+
     } catch (error) {
       console.log(error);
     }
