@@ -12,7 +12,7 @@ import { Control } from "react-hook-form"
 import Image from "next/image"
 import PhoneInput from "react-phone-number-input"
 import { E164Number } from "libphonenumber-js/core"
-import DatePicker from "react-datepicker"
+import ReactDatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { Select, SelectValue, SelectTrigger, SelectContent } from "./ui/select"
 import { Textarea } from "./ui/textarea"
@@ -95,12 +95,13 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                 <div className="flex rounded-md border border-dark-500 bg-dark-400">
                     <Image src="/assets/icons/calendar.svg" alt="calendar" width={24} height={24} className="ml-2" />
                     <FormControl>  
-                        <DatePicker selected={field.value} onChange={(date) => field.onChange(date)}
-                            dateFormat={props.dateFormat ?? 'dd/MM/yyyy' }
-                            showTimeSelect={props.showTimeSelect ?? false}
+                        <ReactDatePicker 
+                        showTimeSelect={props.showTimeSelect ?? false}
+                            selected={field.value}
+                            onChange={(date: Date) => field.onChange(date)}
                             timeInputLabel="Time:"
-                            wrapperClassName="date-picker"
-                            placeholderText="dd/mm/yyyy"
+                            dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+                            wrapperClassName="date-picker"   
                         />    
                     </FormControl>
                 </div>
