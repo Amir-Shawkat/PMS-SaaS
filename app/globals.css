@@ -112,6 +112,7 @@
   .radio-group { @apply flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-dark-500 bg-dark-400 p-3; }
   .checkbox-label { @apply cursor-pointer text-sm font-medium text-dark-700 md:leading-none; }
   .file-upload { @apply flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border border-dashed border-dark-500 bg-dark-400 p-5 text-[12px] leading-[16px] font-normal; }
+  .file-upload_label { @apply flex flex-col justify-center gap-2 text-center text-dark-600; }
 
   /* TYPOGRAPHY UTILITIES */
   .text-36-bold { @apply text-[36px] leading-[40px] font-bold; }
@@ -137,6 +138,74 @@
   .shad-otp-slot { @apply !flex !size-16 !items-center !justify-center !gap-4 !rounded-lg !border !border-dark-500 !text-[32px] !font-bold; }
 }
 
+.shad-combobox-item {
+    /* Use the ! prefix on each utility instead of trailing !important */
+    @apply !pointer-events-none !opacity-50;
+  }
+
+  .shad-combobox-trigger {
+    @apply !h-11;
+  }
+
+  .shad-select-trigger {
+    @apply !bg-dark-400 !border-dark-500 !h-11 !ring-0 !ring-offset-0 !w-full;
+  }
+
+  .shad-select-content {
+    @apply !bg-dark-400 !border-dark-500;
+  }
+
+  .shad-dialog {
+    @apply !bg-dark-400 !border-dark-500;
+  }
+
+  .shad-dialog button {
+    @apply !ring-0 !ring-offset-0 !border-none !outline-none !ring-transparent;
+  }
+
+  .shad-error {
+    @apply !text-red-400;
+  }
+
+  .shad-table {
+    @apply !rounded-lg !overflow-hidden;
+  }
+
+  .shad-table-row-header {
+    @apply !border-b !border-dark-400 !text-light-200 hover:!bg-transparent;
+  }
+
+  .shad-table-row {
+    @apply !border-b !border-dark-400 !text-light-200;
+  }
+
+  .shad-otp {
+    @apply !w-full !flex !justify-between;
+  }
+
+  .shad-otp-slot {
+    /* Since text-36-bold is a custom class, define it explicitly or use raw values */
+    @apply !text-[36px] !leading-[40px] !font-bold !justify-center !flex !border !border-dark-500 !rounded-lg !size-16 !gap-4;
+  }
+
+  .shad-alert-dialog {
+    @apply !space-y-5 !bg-dark-400 !border-dark-500 !outline-none;
+  }
+
+  .shad-sheet-content button {
+    @apply !top-2 !ring-0 !ring-offset-0 !border-none !outline-none !ring-transparent;
+  }
+
+  /* ===== REACT PHONE NUMBER INPUT OVERRIDES */
+  .input-phone {
+    @apply !mt-2 !h-11 !rounded-md !px-3 !text-sm !border !bg-dark-400 !border-dark-500;
+  }
+
+  /* ===== REACT DATE PICKER OVERRIDES */
+  .date-picker {
+    /* v4 likes raw values for custom typography to avoid 'unknown utility' errors */
+    @apply !overflow-hidden !border-transparent !w-full !h-11 !text-[14px] !leading-[18px] !font-medium !rounded-md !px-3 !outline-none;
+  }
 /* EXTERNAL OVERRIDES (Keep standard CSS for these) */
 .react-datepicker, .react-datepicker__header, .react-datepicker__day {
   background-color: #1a1d21 !important;
