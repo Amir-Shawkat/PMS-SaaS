@@ -179,21 +179,28 @@
     @apply !border-b !border-dark-400 !text-light-200;
   }
 
+  .shad-alert-dialog {
+    /* Force the modal to be wide enough even on tiny screens */
+    @apply !bg-dark-400 !border-dark-500 !outline-none !p-5 !w-[95vw] !max-w-[500px] !fixed !left-[50%] !top-[50%] !-translate-x-1/2 !-translate-y-1/2 !flex !flex-col !gap-6;
+  }
+
   .shad-otp {
-    @apply !w-full !flex !justify-between;
+    /* Use gap-1 for mobile, gap-4 for desktop */
+    @apply !w-full !flex !justify-between !gap-1 sm:!gap-2 md:!gap-4;
   }
 
   .shad-otp-slot {
-    /* Since text-36-bold is a custom class, define it explicitly or use raw values */
-    @apply !text-[36px] !leading-[40px] !font-bold !justify-center !flex !border !border-dark-500 !rounded-lg !size-16 !gap-4;
-  }
-
-  .shad-alert-dialog {
-    @apply !space-y-5 !bg-dark-400 !border-dark-500 !outline-none;
+    /* size-10 (40px) for mobile, size-16 (64px) for desktop */
+    @apply !size-10 sm:!size-12 md:!size-16 !text-[24px] md:!text-[36px] !font-bold !justify-center !flex !border !border-dark-500 !rounded-lg !bg-dark-500;
   }
 
   .shad-sheet-content button {
     @apply !top-2 !ring-0 !ring-offset-0 !border-none !outline-none !ring-transparent;
+  }
+
+  /* ==== SUCCESS */
+  .success-img {
+    @apply m-auto flex flex-1 flex-col items-center justify-between gap-10 py-10;
   }
 
   /* ===== REACT PHONE NUMBER INPUT OVERRIDES */
