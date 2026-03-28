@@ -2,22 +2,29 @@ import Image from "next/image";
 
 import { AppointmentForm } from "@/components/forms/AppointmentForm";
 import { getPatient } from "@/lib/actions/patient.actions";
+import Link from "next/link";
+
+import * as Sentry from "@sentry/nextjs";
 
 const Appointment = async ({ params }: SearchParamProps) => {
   const { userId } = await params;
   const patient = await getPatient(userId);
 
+  Sentry.metrics.count("user_view_new_appointment", patient?.name || "unknown");
+
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[860px] flex-1 justify-between">
-          <Image
-            src="/assets/icons/logo-full.svg"
-            height={1000}
-            width={1000}
-            alt="logo"
-            className="mb-12 h-10 w-fit"
-          />
+          <Link href="/" className="my-10">
+            <Image
+              src="/assets/icons/logo-full.svg"
+              height={1000}
+              width={1000}
+              alt="logo"
+              className="h-10 w-fit"
+            />
+          </Link>
 
           <AppointmentForm
             patientId={patient?.$id}

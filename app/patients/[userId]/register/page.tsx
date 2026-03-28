@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import * as Sentry from "@sentry/nextjs";
 
 import RegisterForm from "@/components/forms/RegisterForm";
 import { 
@@ -12,6 +12,8 @@ const Register = async ({ params }: SearchParamProps) => {
 //   const patient = await getPatient(userId);
 
 //   if (patient) redirect(`/patients/${userId}/new-appointment`);
+
+  Sentry.metrics.count("user_view_register", user.name);
 
   return (
     <div className="flex h-screen max-h-screen">
