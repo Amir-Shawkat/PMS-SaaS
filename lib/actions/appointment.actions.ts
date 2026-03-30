@@ -6,7 +6,7 @@ import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
-import { email } from "zod";
+
 
 
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
