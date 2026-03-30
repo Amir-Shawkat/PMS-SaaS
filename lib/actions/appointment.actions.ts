@@ -1,10 +1,12 @@
 'use server';
 
-import { APPOINTMENT_TABLE_ID, DATABASE_ID, databases, messaging, PATIENT_TABLE_ID } from "../appwrite.config";
+import { APPOINTMENT_TABLE_ID, DATABASE_ID, databases, messaging, PATIENT_TABLE_ID, users } from "../appwrite.config";
 import { ID, Query } from "node-appwrite";
 import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
+import { Resend } from "resend";
+import { email } from "zod";
 
 
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
@@ -91,6 +93,29 @@ export const getRecentAppointmentList = async () => {
     }
 }
 
+const emailNotification = async ({ appointment, type, email }: { appointment: any, type: string, email: string }) => {
+    const resend = new Resend(process.env.RESEND_API_KEY!);
+
+    try {
+        await resend.emails.send({
+            from: 'onboarding@resend.dev', // Ensure this domain is verified in Resend
+            to: email, // MUST be an email address, not a userId
+            subject: `CarePulse: Appointment ${type === "schedule" ? "Confirmed" : "Cancelled"}`,
+            html: `
+                <div style="font-family: Arial, sans-serif;">
+                    <h2>Greetings from CarePulse!</h2>
+                    <p>Your appointment is <strong>${type === "schedule" ? "confirmed" : "cancelled"}</strong>.</p>
+                    <p>${type === "schedule" 
+                        ? `Date: ${formatDateTime(appointment.schedule!).dateTime} with <strong>Dr. ${appointment.primaryPhysician}</strong>`
+                        : `Reason: ${appointment.cancellationReason}`}
+                    </p>
+                </div>`
+        });
+    } catch (error) {
+        console.error("Resend Error:", error);
+    }
+}
+
 export const updateAppointment = async ({ appointmentId, appointment, type, userId }: UpdateAppointmentParams) => {
     try {
         const updatedAppointment = await databases.updateDocument(
@@ -109,6 +134,21 @@ export const updateAppointment = async ({ appointmentId, appointment, type, user
             : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
             
         await sendSMSNotification(userId, smsMessage);
+
+        const user = await users.get(userId); 
+        const userEmail = user.email;
+
+        await emailNotification({ appointment, type, email: userEmail });
+
+        
+
+        const emailMessage = `${type === "schedule" ?
+
+            `Your appointment is confirmed for ${formatDateTime(appointment.schedule!).dateTime} with Dr. ${appointment.primaryPhysician}`
+
+            : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`
+
+        await sendEmailNotification(userId, "CarePulse Appointment Update", emailMessage);
 
         revalidatePath('/admin');
         return parseStringify(updatedAppointment);
@@ -130,5 +170,21 @@ export const sendSMSNotification = async (userId: string, content: string) => {
     return parseStringify(message);
   } catch (error) {
     console.error("An error occurred while sending sms:", error);
+  }
+};
+
+// Send Email Notification
+export const sendEmailNotification = async (userId: string, subject: string, content: string) => {
+  try {
+    const message = await messaging.createEmail(
+      ID.unique(),
+      subject,
+      content,
+      [], // Topics (empty)
+      [userId] // Target User IDs
+    );
+    return parseStringify(message);
+  } catch (error) {
+    console.error("Appwrite Messaging Error:", error);
   }
 };
